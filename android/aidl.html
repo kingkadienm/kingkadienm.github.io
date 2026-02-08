@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AIDL 进程间通信 | 云端记事集</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    
+    <meta name="description" content="专注于记录技术点滴">
+    
+    <link rel="preload" href="/assets/css/0.styles.59620df1.css" as="style"><link rel="preload" href="/assets/js/app.dda55d99.js" as="script"><link rel="preload" href="/assets/js/2.36384bf7.js" as="script"><link rel="preload" href="/assets/js/1.ef4b05e9.js" as="script"><link rel="preload" href="/assets/js/26.d325d0bc.js" as="script"><link rel="prefetch" href="/assets/js/10.0db46967.js"><link rel="prefetch" href="/assets/js/11.d62200d2.js"><link rel="prefetch" href="/assets/js/12.ae470926.js"><link rel="prefetch" href="/assets/js/13.b04c57ad.js"><link rel="prefetch" href="/assets/js/14.2a5682fd.js"><link rel="prefetch" href="/assets/js/15.540584f5.js"><link rel="prefetch" href="/assets/js/16.637b4eb3.js"><link rel="prefetch" href="/assets/js/17.fe7e2849.js"><link rel="prefetch" href="/assets/js/18.5341d2b3.js"><link rel="prefetch" href="/assets/js/19.6ee6f591.js"><link rel="prefetch" href="/assets/js/20.20859016.js"><link rel="prefetch" href="/assets/js/21.11e89801.js"><link rel="prefetch" href="/assets/js/22.c1f1019d.js"><link rel="prefetch" href="/assets/js/23.56c6f046.js"><link rel="prefetch" href="/assets/js/24.12d2a1d7.js"><link rel="prefetch" href="/assets/js/25.1361e6c7.js"><link rel="prefetch" href="/assets/js/27.fa2aadbe.js"><link rel="prefetch" href="/assets/js/28.f48d0320.js"><link rel="prefetch" href="/assets/js/29.9cf67320.js"><link rel="prefetch" href="/assets/js/3.48c22373.js"><link rel="prefetch" href="/assets/js/30.1b277e37.js"><link rel="prefetch" href="/assets/js/31.02210692.js"><link rel="prefetch" href="/assets/js/32.9908d495.js"><link rel="prefetch" href="/assets/js/33.1c0d4eea.js"><link rel="prefetch" href="/assets/js/34.d9109fdc.js"><link rel="prefetch" href="/assets/js/35.15c6d59a.js"><link rel="prefetch" href="/assets/js/36.018facc3.js"><link rel="prefetch" href="/assets/js/37.7ad375a7.js"><link rel="prefetch" href="/assets/js/38.853e32cf.js"><link rel="prefetch" href="/assets/js/39.a7b671cd.js"><link rel="prefetch" href="/assets/js/4.9dddb9b1.js"><link rel="prefetch" href="/assets/js/40.e2450c82.js"><link rel="prefetch" href="/assets/js/41.b5d48620.js"><link rel="prefetch" href="/assets/js/42.f86aebac.js"><link rel="prefetch" href="/assets/js/43.4fa4bf4f.js"><link rel="prefetch" href="/assets/js/44.8abe291d.js"><link rel="prefetch" href="/assets/js/45.15656e52.js"><link rel="prefetch" href="/assets/js/46.91384044.js"><link rel="prefetch" href="/assets/js/47.2295c328.js"><link rel="prefetch" href="/assets/js/48.5f483206.js"><link rel="prefetch" href="/assets/js/49.0ed56826.js"><link rel="prefetch" href="/assets/js/5.56e04e14.js"><link rel="prefetch" href="/assets/js/50.e7b4c175.js"><link rel="prefetch" href="/assets/js/51.24108b2d.js"><link rel="prefetch" href="/assets/js/52.42e70320.js"><link rel="prefetch" href="/assets/js/53.1f7beaa7.js"><link rel="prefetch" href="/assets/js/54.30a5d395.js"><link rel="prefetch" href="/assets/js/55.46d8da38.js"><link rel="prefetch" href="/assets/js/56.97ac0a4f.js"><link rel="prefetch" href="/assets/js/57.a16d8f1d.js"><link rel="prefetch" href="/assets/js/58.dca4b330.js"><link rel="prefetch" href="/assets/js/59.666c52fb.js"><link rel="prefetch" href="/assets/js/6.2e66bb4a.js"><link rel="prefetch" href="/assets/js/60.6312c910.js"><link rel="prefetch" href="/assets/js/61.559ca5f5.js"><link rel="prefetch" href="/assets/js/62.b9e3ba09.js"><link rel="prefetch" href="/assets/js/63.588981b8.js"><link rel="prefetch" href="/assets/js/64.ecb3ef36.js"><link rel="prefetch" href="/assets/js/65.7cce88c3.js"><link rel="prefetch" href="/assets/js/66.4255bb96.js"><link rel="prefetch" href="/assets/js/67.d1451767.js"><link rel="prefetch" href="/assets/js/68.7cd3bbd9.js"><link rel="prefetch" href="/assets/js/69.4ebb2750.js"><link rel="prefetch" href="/assets/js/7.c69b7236.js"><link rel="prefetch" href="/assets/js/70.b40d6827.js"><link rel="prefetch" href="/assets/js/71.57572ce2.js"><link rel="prefetch" href="/assets/js/72.7cc1a450.js"><link rel="prefetch" href="/assets/js/vendors~docsearch.6fed1ae2.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.59620df1.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">云端记事集</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/android/" class="nav-link router-link-active">
+  Android
+</a></div><div class="nav-item"><a href="/flutter/" class="nav-link">
+  Flutter
+</a></div><div class="nav-item"><a href="/python/" class="nav-link">
+  Python
+</a></div><div class="nav-item"><a href="/goland/" class="nav-link">
+  Goland
+</a></div><div class="nav-item"><a href="/vue/" class="nav-link">
+  Vue
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/js/" class="nav-link">
+  JS
+</a></div><div class="nav-item"><a href="/css/" class="nav-link">
+  CSS
+</a></div><div class="nav-item"><a href="/other/" class="nav-link">
+  其他
+</a></div><div class="nav-item"><a href="https://github.com/kingkadienm" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/android/" class="nav-link router-link-active">
+  Android
+</a></div><div class="nav-item"><a href="/flutter/" class="nav-link">
+  Flutter
+</a></div><div class="nav-item"><a href="/python/" class="nav-link">
+  Python
+</a></div><div class="nav-item"><a href="/goland/" class="nav-link">
+  Goland
+</a></div><div class="nav-item"><a href="/vue/" class="nav-link">
+  Vue
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/js/" class="nav-link">
+  JS
+</a></div><div class="nav-item"><a href="/css/" class="nav-link">
+  CSS
+</a></div><div class="nav-item"><a href="/other/" class="nav-link">
+  其他
+</a></div><div class="nav-item"><a href="https://github.com/kingkadienm" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/android/" aria-current="page" class="sidebar-link">Android 开发笔记</a></li><li><a href="/android/custom_view.html" class="sidebar-link">安卓自定义View基础-坐标系</a></li><li><a href="/android/aidl.html" aria-current="page" class="active sidebar-link">AIDL 进程间通信</a></li><li><a href="/android/Android知识点收集.html" class="sidebar-link">Android知识点收集</a></li><li><a href="/android/android面试题大全.html" class="sidebar-link">Activity</a></li><li><a href="/android/java.html" class="sidebar-link">Java网络编程（Socket）</a></li><li><a href="/android/适配.html" class="sidebar-link">Android O行为变更：</a></li><li><a href="/android/android-advanced.html" class="sidebar-link">Android进阶</a></li><li><a href="/android/android-project.html" class="sidebar-link">Android实战项目</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="aidl-进程间通信"><a href="#aidl-进程间通信" class="header-anchor">#</a> AIDL 进程间通信</h1> <p>项目目录</p> <p><img src="https://github.com/kingkadienm/PersonalPage/blob/master/docs/.vuepress/image/Snipaste_2019-07-31_16-38-02.png" alt="屏幕默认坐标系示例"></p> <p>分为了两个App一个lib依赖， 其中aidl文件、实体类、和服务写在aidl_library中，然后oneApp和twoApp分别依赖此lib。下面开始仔细讲讲其中的使用方式。先从AIDL文件说起</p> <ul><li>AIDL文件</li></ul> <p>AIDL接口传递的主要是一个自定义类型User，所以先创建User文件，需要实现序列化</p> <div class="language-java line-numbers-mode"><pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>wangzs<span class="token punctuation">.</span>aidl_library</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">android<span class="token punctuation">.</span>os<span class="token punctuation">.</span></span><span class="token class-name">Parcel</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">android<span class="token punctuation">.</span>os<span class="token punctuation">.</span></span><span class="token class-name">Parcelable</span></span><span class="token punctuation">;</span>
+
+
+<span class="token comment">/**
+ * @Description:
+ * @Author:  wangzs
+ * @Date:    2019-07-31 10:42
+ * @Version:
+ * @Email    wangzs@yuntongxun.com
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Parcelable</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> userId<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">String</span> userName<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">String</span> userSex<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">protected</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token class-name">Parcel</span> in<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        userId <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        userName <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        userSex <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Creator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">&gt;</span></span> <span class="token constant">CREATOR</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Creator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token class-name">User</span> <span class="token function">createFromParcel</span><span class="token punctuation">(</span><span class="token class-name">Parcel</span> in<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span>in<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token class-name">User</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">newArray</span><span class="token punctuation">(</span><span class="token keyword">int</span> size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">[</span>size<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">describeContents</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">writeToParcel</span><span class="token punctuation">(</span><span class="token class-name">Parcel</span> dest<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        dest<span class="token punctuation">.</span><span class="token function">writeInt</span><span class="token punctuation">(</span>userId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        dest<span class="token punctuation">.</span><span class="token function">writeString</span><span class="token punctuation">(</span>userName<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        dest<span class="token punctuation">.</span><span class="token function">writeString</span><span class="token punctuation">(</span>userSex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">readFromParcel</span><span class="token punctuation">(</span><span class="token class-name">Parcel</span> in<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        userId <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        userName <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        userSex <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">&quot;User{&quot;</span> <span class="token operator">+</span>
+                <span class="token string">&quot;userId=&quot;</span> <span class="token operator">+</span> userId <span class="token operator">+</span>
+                <span class="token string">&quot;, userName='&quot;</span> <span class="token operator">+</span> userName <span class="token operator">+</span> <span class="token char">'\''</span> <span class="token operator">+</span>
+                <span class="token string">&quot;, userSex='&quot;</span> <span class="token operator">+</span> userSex <span class="token operator">+</span> <span class="token char">'\''</span> <span class="token operator">+</span>
+                <span class="token char">'}'</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br></div></div><p>创建User.aidl文件，声明 parcelable User; （注意: 因为前面创建了User.class, 此时再创建User.aidl会提示名字冲突错误导致无法创建，可以先随便起个名字，创建完后再改成User）</p> <div class="language-aidl line-numbers-mode"><pre class="language-text"><code>// User.aidl
+package com.wangzs.aidl_library;
+
+parcelable User;
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>创建AIDL接口，IUserCallBack.aidl文件，这里定义了一个add方法和一个get方法</p> <div class="language-aidl line-numbers-mode"><pre class="language-text"><code>
+// IUserCallBack.aidl
+package com.wangzs.aidl_library;
+
+// 导入User的路径
+import com.wangzs.aidl_library.User;
+
+// Declare any non-default types here with import statements
+
+interface IUserCallBack {
+
+   /**
+    * 申明为 inout 时需要手动在User.class添加readFromParcel()方法
+    */
+    void addUser(inout User user);
+
+    User getUser();
+
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><ul><li><p>注：这里重点是in、out、inout修饰符以及Parcelable的使用！常见的是in、Parcelable，少用的out、inout。
+这几种修饰符，可理解如下：</p> <p>in：客户端的参数输入；</p> <p>out：服务端的参数输入；</p> <p>inout：这个可以叫输入输出参数，客户端可输入、服务端也可输入。客户端输入了参数到服务端后，服务端也可对该参数进行修改等，最后在客户端上得到的是服务端输出的参数。
+如果类型申明为inout，则需要在User.class中手动添加readFromParcel方法，因为这个方法无法自动生成</p></li></ul> <p>最后我们需要一个Service来帮助实现建立桥梁，在Service中我们需要实现IuserCallBack接口然后和Service的onBind进行联系。</p> <div class="language-java line-numbers-mode"><pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>wangzs<span class="token punctuation">.</span>aidl_library</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">android<span class="token punctuation">.</span>app<span class="token punctuation">.</span></span><span class="token class-name">Service</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">android<span class="token punctuation">.</span>content<span class="token punctuation">.</span></span><span class="token class-name">Intent</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">android<span class="token punctuation">.</span>os<span class="token punctuation">.</span></span><span class="token class-name">IBinder</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">android<span class="token punctuation">.</span>os<span class="token punctuation">.</span></span><span class="token class-name">RemoteException</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">android<span class="token punctuation">.</span>support<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Nullable</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">CopyOnWriteArrayList</span></span><span class="token punctuation">;</span>
+
+
+<span class="token comment">/**
+ * @Description:
+ * @Author: wangzs
+ * @Date: 2019-07-31 10:39
+ * @Version:
+ * @Email wangzs@yuntongxun.com
+ */</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserService</span> <span class="token keyword">extends</span> <span class="token class-name">Service</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// 支持并发读写</span>
+    <span class="token keyword">private</span> <span class="token class-name">CopyOnWriteArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">&gt;</span></span> users <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CopyOnWriteArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Nullable</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token class-name">IBinder</span> <span class="token function">onBind</span><span class="token punctuation">(</span><span class="token class-name">Intent</span> intent<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> mStub<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token class-name">IUserCallBack<span class="token punctuation">.</span>Stub</span> mStub <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IUserCallBack<span class="token punctuation">.</span>Stub</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addUser</span><span class="token punctuation">(</span><span class="token class-name">User</span> user<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">RemoteException</span> <span class="token punctuation">{</span>
+            users<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            users<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token class-name">User</span> <span class="token function">getUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">RemoteException</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> users<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br></div></div><p>服务创建好了当然也不要忘记注册这个服务，在AndroidManifest.xml进行注册，因为跨进程所以属性exported为true，代表可以被其他appliction启动；还需要定义好启动服务的Action。</p> <div class="language-service line-numbers-mode"><pre class="language-text"><code>  &lt;service
+            android:name=&quot;com.wangzs.aidl_library.UserService&quot;
+            android:enabled=&quot;true&quot;
+            android:exported=&quot;true&quot;
+            android:process=&quot;:remote&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;!-- 定义Action --&gt;
+                &lt;action android:name=&quot;aidl_user_service&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/service&gt;
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>到此，AIDL的”服务端“算是完成了。</p> <p>自定义类型需要实现Parcelable接口
+名字冲突错误导致无法创建，可以先随便起个名字，创建完后再改成和AIDL文件名字一致。
+如果类型申明为inout，则需要在User.class中手动添加readFromParcel方法。
+注册Service时需要添加exported=true，并定义Action。</p> <ul><li>数据传递
+完成后咱们就来开始实现两个App之间的数据传递。我们需要从App1跳转到App2，然后由App2来发送数据，所以首选要知道跳转到App2的哪个页面，然后在清单文件中在该Activity添加android:exported=true允许被其他Appliction调用（这种方式不建议, 最好通过定义uri的方式进行跳转）</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>&lt;activity
+      android:name=&quot;.MainTwoActivity&quot;
+      android:exported=&quot;true&quot;/&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>然后从App1编写跳转到该MainTwoActivity的代码 （这种方式不建议, 最好通过定义uri的方式进行跳转），</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>    private String TAG = &quot;wangzs&quot;;
+    IUserCallBack callBack = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!isApkInstalled(&quot;com.wangzs.twoapp&quot;)) {
+                    return;
+                }
+            }
+        });
+    }
+    public boolean isApkInstalled(String packageName) {
+        if (TextUtils.isEmpty(packageName)) {
+            return false;
+        }
+        try {
+            ApplicationInfo info = getPackageManager().getApplicationInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (conn!=null) {
+            unbindService(conn);
+        }
+    }
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br></div></div><p>此时如果不出意外的话会正常打开App2的MainTwoActivity的页面, 点击该页面的按钮, 开始发送数据。
+先new ServiceConnection可以取到一个IBinder对象, 通过该对象可以拿到我们的之前实现的IUserCallBack实例IUserCallBack callback = IUserCallBack.Stub.asInterface(service)。然后通过call可以调取接口的回调方法callBack.addUser(user);。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>  private ServiceConnection conn = new ServiceConnection() {
+         @Override
+         public void onServiceConnected(ComponentName name, IBinder service) {
+             callBack = IUserCallBack.Stub.asInterface(service);
+             try {
+                 User user = new User();
+                 user.userId = 101;
+                 user.userName = &quot;张三&quot;;
+                 user.userSex = &quot;男&quot;;
+                 callBack.addUser(user);
+                 Log.e(TAG, &quot;发送数据  == &quot; + user.toString());
+                 Toast.makeText(MainTwoActivity.this, &quot;发送成功, 数据看Log日志&quot;, Toast.LENGTH_LONG).show();
+             } catch (RemoteException e) {
+                 e.printStackTrace();
+             }
+         }
+ 
+         @Override
+         public void onServiceDisconnected(ComponentName name) {
+             callBack = null;
+         }
+     };
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><p>有了ServiceConnection我们可以开始绑定服务了，（绑定服务时需要注意的是：Action是注册Service时定义的，Package是发送端的包名），如果isBind返回false则代表服务绑定失败, 就需要查看Action是否和注册时一致，Package是否正确。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>                // 这里以包名跳转
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                // 参数1:目标包名 参数2:目标activity的具体路径
+                ComponentName componentName = new ComponentName(&quot;com.wangzs.twoapp&quot;, &quot;com.wangzs.twoapp.MainTwoActivity&quot;);
+                intent.setComponent(componentName);
+                startActivity(intent);
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>App2的数据已经发送了, 那么我们回到App1中接收数据，接收数据也很简单，可以把代码copy过来，把addUser()改为getUser()。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code> private ServiceConnection conn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            callBack = IUserCallBack.Stub.asInterface(service);
+            try {
+                User user = callBack.getUser();
+                if (user != null) {
+                    Log.e(TAG, &quot;接收数据  == &quot; + user.toString());
+                    Toast.makeText(MainOneActivity.this, &quot;接收到数据, 数据看Log日志&quot;, Toast.LENGTH_LONG).show();
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            callBack = null;
+        }
+    };
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br></div></div><p>绑定服务的代码可以copy过来, 一定要注意的是, 接收数据时Intent的Package也一定是发送端的包名，也就是App2的包名。不然bindService会返回false。
+最后不要忘记在销毁页面时unbindService(conn);</p> <p>纠结的地方：App2发送数据后页面关闭时调用onDestroy,在该回调中调用unbindService(conn), 会导致App1接收的数据为null。切记切记...</p> <p>再总结一下数据传递时容易发生的坑</p> <ul><li>目标Activity要exported=true (建议使用uri方式)</li> <li>Action是注册Service时定义的</li> <li>不管在哪个App绑定service, intent的Package一定是发送数据端的包名。</li> <li>bindService返回true时多检查action和package。</li></ul> <p><a href="https://github.com/kingkadienm/AndroidAIDL" target="_blank" rel="noopener noreferrer">Demo地址<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">最后更新:</span> <span class="time">8/1/2019, 2:32:06 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/android/custom_view.html" class="prev">
+        安卓自定义View基础-坐标系
+      </a></span> <span class="next"><a href="/android/Android知识点收集.html">
+        Android知识点收集
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.dda55d99.js" defer></script><script src="/assets/js/2.36384bf7.js" defer></script><script src="/assets/js/1.ef4b05e9.js" defer></script><script src="/assets/js/26.d325d0bc.js" defer></script>
+  </body>
+</html>
